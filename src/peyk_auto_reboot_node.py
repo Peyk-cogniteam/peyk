@@ -11,6 +11,7 @@ class ImageSubscriberNode:
         self.time_interval = time_interval
         self.received_messages = 0
         self.start_time = time.time()
+        self.camera_is_good = False
 
         # Subscribe to the image topic
         rospy.Subscriber(image_topic_name, Image, self.image_callback)
@@ -30,15 +31,19 @@ class ImageSubscriberNode:
             rospy.loginfo("Received {} messages in {} seconds. Stopping subscription.".format(
                 self.max_messages, self.time_interval))
             # camera is good 
-            rospy.signal_shutdown("Received {} messages in {} seconds.".format(
-                self.max_messages, self.time_interval))
+            # rospy.signal_shutdown("Received {} messages in {} seconds.".format(
+            #     self.max_messages, self.time_interval))
+            return
 
         # Check if the time interval has passed
-        elif time.time() - self.start_time >= self.time_interval:
-            rospy.loginfo("Did not receive {} messages in {} seconds. Rebooting the computer.".format(
-                self.max_messages, self.time_interval))
-            os.system("sudo reboot")
-            self.timer.shutdown()  # Stop the timer
+        else:
+            duration =  time.time() - self.start_time 
+
+            if duration >= self.time_interval:
+                rospy.loginfo("Did not receive {} messages in {} seconds. Rebooting the computer.".format(
+                    self.max_messages, self.time_interval))
+                os.system("sudo reboot")
+                self.timer.shutdown()  # Stop the timer
 def main():
     rospy.init_node('peyk_auto_reboot_node', anonymous=True)
 
