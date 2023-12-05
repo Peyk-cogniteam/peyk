@@ -53,7 +53,6 @@ def main():
 
     image_topic_name = rospy.get_param('image_topic_name', '/merged_image')
 
-
     # Create an instance of the ImageSubscriberNode class
     image_subscriber_node = ImageSubscriberNode(max_messages, time_interval, image_topic_name)
 
