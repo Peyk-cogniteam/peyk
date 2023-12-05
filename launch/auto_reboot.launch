@@ -1,0 +1,10 @@
+<launch>
+    <arg name="image_topic" default="/merged_image" />
+    <arg name="time_interval_seconds" default="30" />
+    <node name="peyk_auto_reboot_node" pkg="peyk_auto_reboot" type="peyk_auto_reboot_node.py" output="screen">
+        
+        <param name="time_interval_seconds" value="$(arg time_interval_seconds)" />
+        <param name="image_topic" value="$(arg image_topic)" />
+    
+    </node>
+</launch>
